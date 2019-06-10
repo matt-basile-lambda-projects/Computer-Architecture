@@ -1,6 +1,7 @@
 #include "cpu.h"
 
 #define DATA_LEN 6
+#define HALT 1
 
 /**
  * Load the binary bytes from a .ls8 source file into a RAM array
@@ -42,12 +43,14 @@ void alu(struct cpu *cpu, enum alu_op op, unsigned char regA, unsigned char regB
 
 /* RAM Functions */
 // Read
-void cpu_ram_read(struct cpu *cpu){
+unsigned char cpu_ram_read(struct cpu *cpu, unsigned char index ){
   // return values in our RAM
+  return cpu->ram[index];
 }
 // Write
-void cpu_ram_write(struct cpu *cpu){
-  // Add/delete to our ram
+void cpu_ram_write(struct cpu *cpu, unsigned char index, unsigned char item){
+  // write in the given index
+  cpu->ram[index] = item;
 }
 /**
  * Run the CPU
@@ -59,11 +62,25 @@ void cpu_run(struct cpu *cpu)
   while (running) {
     // TODO
     // 1. Get the value of the current instruction (in address PC).
+    int PC = cpu->pc;
+    unsigned char ir = cpu_ram_read(cpu, PC);
     // 2. Figure out how many operands this next instruction requires
     // 3. Get the appropriate value(s) of the operands following this instruction
+    unsigned char operandA = cpu_ram_read(cpu, PC+1);
+    unsigned char operandB = cpu_ram_read(cpu, PC+2);
     // 4. switch() over it to decide on a course of action.
-    // 5. Do whatever the instruction should do according to the spec.
+    switch (ir){
+      // 5. Do whatever the instruction should do according to the spec.
+      // DAY 1 HLT, LDI, PRN
+      case HALT:
+        running = 0;
+        break;
+    default:
+        printf("Unknown instruction %02x at address %02x\n");
+        exit(1);
+    }
     // 6. Move the PC to the next instruction.
+    PC++;
   }
 }
 

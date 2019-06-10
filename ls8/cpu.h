@@ -10,7 +10,7 @@ struct cpu {
   // registers (array)
   unsigned char registers[8];
   // ram (array)
-  unsigned char ram[128];
+  unsigned char ram[256];
 };
 
 // ALU operations
@@ -23,7 +23,7 @@ enum alu_op {
 
 // These use binary literals. If these aren't available with your compiler, hex
 // literals should be used.
-
+#define HLT  0b00000001
 #define LDI  0b10000010
 #define PRN  0b01000111
 // TODO: more instructions here. These can be used in cpu_run().
@@ -33,7 +33,7 @@ enum alu_op {
 extern void cpu_load(struct cpu *cpu);
 extern void cpu_init(struct cpu *cpu);
 extern void cpu_run(struct cpu *cpu);
-extern void cpu_ram_read(struct cpu *cpu);
-extern void cpu_ram_write(struct cpu *cpu);
+// extern void cpu_ram_read(struct cpu *cpu);
+// extern void cpu_ram_write(struct cpu *cpu);
 
 #endif

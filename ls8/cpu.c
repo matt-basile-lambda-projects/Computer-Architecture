@@ -1,7 +1,11 @@
 #include "cpu.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 #define DATA_LEN 6
-#define HALT 1
+#define HLT 1
+#define LDI 2
+#define PRN 3
 
 /**
  * Load the binary bytes from a .ls8 source file into a RAM array
@@ -72,7 +76,14 @@ void cpu_run(struct cpu *cpu)
     switch (ir){
       // 5. Do whatever the instruction should do according to the spec.
       // DAY 1 HLT, LDI, PRN
-      case HALT:
+      case LDI:
+        cpu->registers[operandA] = operandB;
+        PC+=2;
+        break;
+      case PRN:
+        printf("%d\n", cpu->registers[operandA]);
+        break;
+      case HLT:
         running = 0;
         break;
     default:

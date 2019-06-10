@@ -40,6 +40,15 @@ void alu(struct cpu *cpu, enum alu_op op, unsigned char regA, unsigned char regB
   }
 }
 
+/* RAM Functions */
+// Read
+void cpu_ram_read(struct cpu *cpu){
+  // return values in our RAM
+}
+// Write
+void cpu_ram_write(struct cpu *cpu){
+  // Add/delete to our ram
+}
 /**
  * Run the CPU
  */
@@ -64,4 +73,12 @@ void cpu_run(struct cpu *cpu)
 void cpu_init(struct cpu *cpu)
 {
   // TODO: Initialize the PC and other special registers
+  // Initialize program counter to 0 
+  cpu->pc = 0;
+  // Initialize instruction register to 0
+  cpu->ir = 0;
+  // Initalize 8 bit space for registers to 0
+  memset(cpu->registers, 0, 7);
+  // Initialize 256 bytes for RAM to 0
+  memset(cpu->ram, 0, 256);
 }

@@ -10,7 +10,7 @@ struct cpu {
   // registers (array)
   unsigned char registers[8];
   // ram (array)
-  unsigned char memory[128];
+  unsigned char ram[128];
 };
 
 // ALU operations
@@ -33,5 +33,7 @@ enum alu_op {
 extern void cpu_load(struct cpu *cpu);
 extern void cpu_init(struct cpu *cpu);
 extern void cpu_run(struct cpu *cpu);
+extern void cpu_ram_read(struct cpu *cpu);
+extern void cpu_ram_write(struct cpu *cpu);
 
 #endif

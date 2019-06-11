@@ -7,6 +7,7 @@
  */
 int main(int argc, char *argv[])
 {
+  // printf("yoyoyoyp");
   struct cpu cpu;
   if (argc != 2) {
     fprintf(stderr, "You didn't provide the right number of args. Please include the name of the file you want to run.\n");

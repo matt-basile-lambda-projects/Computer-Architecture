@@ -5,7 +5,6 @@
 
 #define DATA_LEN 6
 
-
 /**
  * Load the binary bytes from a .ls8 source file into a RAM array
  */
@@ -20,12 +19,13 @@ void cpu_load(struct cpu *cpu, char *filename)
   //   0b00000000,
   //   0b00000001  // HLT
   // };
+  //  int address = 0;
 
   // for (int i = 0; i < DATA_LEN; i++) {
   //   cpu->ram[address++] = data[i];
   // }
   // TODO: Replace this with something less hard-coded
-  // printf("%c\n", filename);
+  // printf("%p", *filename);
    int address = 0;
     FILE *fp;
     char line[1024];
@@ -37,7 +37,7 @@ void cpu_load(struct cpu *cpu, char *filename)
     // do stuff -> take the contents and load in memory
    while(fgets(line, sizeof line, fp) != NULL){
       char *endptr;
-      unsigned char v = strtol(line, &endptr, 2); //str to unsigned long
+      unsigned char v = strtoul(line, &endptr, 2); //str to unsigned long
       // printf("%c", v);
       if (endptr == line){
         continue;
@@ -107,11 +107,10 @@ void cpu_run(struct cpu *cpu)
         break;
     default:
         printf("Unknown instruction %02x at address %02x\n");
-        exit(1);
-        break;
+        exit(3);
     }
     // 6. Move the PC to the next instruction.
-    PC += instruction_bytes;
+    cpu->pc += instruction_bytes;
   }
 }
 

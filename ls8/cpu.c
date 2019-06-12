@@ -10,22 +10,6 @@
  */
 void cpu_load(struct cpu *cpu, char *filename)
 {
-  // char data[DATA_LEN] = {
-  //   // From print8.ls8
-  //   0b10000010, // LDI R0,8
-  //   0b00000000,
-  //   0b00001000,
-  //   0b01000111, // PRN R0
-  //   0b00000000,
-  //   0b00000001  // HLT
-  // };
-  //  int address = 0;
-
-  // for (int i = 0; i < DATA_LEN; i++) {
-  //   cpu->ram[address++] = data[i];
-  // }
-  // TODO: Replace this with something less hard-coded
-  // printf("%p", *filename);
    int address = 0;
     FILE *fp;
     char line[1024];
@@ -52,12 +36,20 @@ void cpu_load(struct cpu *cpu, char *filename)
  */
 void alu(struct cpu *cpu, enum alu_op op, unsigned char regA, unsigned char regB)
 {
+  unsigned char *reg = cpu->registers;
   switch (op) {
+    //  unsigned char *reg = cpu->registers;
+    //  unsigned char value_two = reg[regB];
+
     case ALU_MUL:
       // TODO
+      // multiple registerA and registerB
+      reg[regA] *= reg[regB];
+      // printf("%c", regA);
       break;
 
     // TODO: implement more ALU ops
+
   }
 }
 
@@ -102,6 +94,9 @@ void cpu_run(struct cpu *cpu)
       case PRN:
         printf("%d\n", cpu->registers[operandA]);
         break;
+      case MUL:
+          alu(cpu, ALU_MUL, operandA, operandB);
+          break;
       case HLT:
         running = 0;
         break;

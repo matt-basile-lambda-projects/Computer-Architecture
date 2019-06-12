@@ -4,6 +4,7 @@
 #include <string.h>
 
 #define DATA_LEN 6
+#define SP 7
 
 /**
  * Load the binary bytes from a .ls8 source file into a RAM array
@@ -97,6 +98,16 @@ void cpu_run(struct cpu *cpu)
       case MUL:
           alu(cpu, ALU_MUL, operandA, operandB);
           break;
+      case PUSH:
+        cpu->registers[SP]--; // decrement SP
+				unsigned char v = cpu->registers[operandA]; // now push v on stack
+				cpu->ram[cpu->registers[SP]] = v; 
+         break;
+      case POP:
+				v = cpu->ram[cpu->registers[SP]];
+				cpu->registers[operandA] = v;
+				cpu->registers[SP]++;
+        break;
       case HLT:
         running = 0;
         break;
@@ -121,6 +132,8 @@ void cpu_init(struct cpu *cpu)
   cpu->ir = 0;
   // Initialize 8 bit space for registers to 0
   memset(cpu->registers, 0, 8);
+  // Initialize Registers SP
+  cpu->registers[SP] = 0xF4;
   // Initialize 256 bytes for RAM to 0
   memset(cpu->ram, 0, 256);
 }

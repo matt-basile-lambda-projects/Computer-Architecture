@@ -39,18 +39,15 @@ void alu(struct cpu *cpu, enum alu_op op, unsigned char regA, unsigned char regB
 {
   unsigned char *reg = cpu->registers;
   switch (op) {
-    //  unsigned char *reg = cpu->registers;
-    //  unsigned char value_two = reg[regB];
-
     case ALU_MUL:
       // TODO
       // multiple registerA and registerB
       reg[regA] *= reg[regB];
       // printf("%c", regA);
       break;
-
-    // TODO: implement more ALU ops
-
+    case ALU_ADD:
+      reg[regA] += reg[regB];
+      break;
   }
 }
 
@@ -90,13 +87,16 @@ void cpu_run(struct cpu *cpu)
       // DAY 1 HLT, LDI, PRN
       case LDI:
         cpu->registers[operandA] = operandB;
-        // PC+=2;
         break;
       case PRN:
         printf("%d\n", cpu->registers[operandA]);
         break;
       case MUL:
           alu(cpu, ALU_MUL, operandA, operandB);
+          break;
+      case ADD:
+          // printf("%s\n", 'adding');
+          alu(cpu, ALU_ADD, operandA, operandB);
           break;
       case PUSH:
         cpu->registers[SP]--; // decrement SP
@@ -109,13 +109,15 @@ void cpu_run(struct cpu *cpu)
 				cpu->registers[SP]++;
         break;
       case CALL:
-        cpu->registers[SP]--;
+				cpu->registers[SP]--;
         cpu->ram[cpu->registers[SP]] = cpu->pc + 2;
         cpu->pc = cpu->registers[operandA];
+        instruction_bytes = 0;
         break;
       case RET:
         cpu->pc = cpu->ram[cpu->registers[SP]];
         cpu->registers[SP]++;
+        instruction_bytes = 0;
         break;
       case HLT:
         running = 0;

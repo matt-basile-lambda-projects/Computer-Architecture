@@ -108,6 +108,15 @@ void cpu_run(struct cpu *cpu)
 				cpu->registers[operandA] = v;
 				cpu->registers[SP]++;
         break;
+      case CALL:
+        cpu->registers[SP]--;
+        cpu->ram[cpu->registers[SP]] = cpu->pc + 2;
+        cpu->pc = cpu->registers[operandA];
+        break;
+      case RET:
+        cpu->pc = cpu->ram[cpu->registers[SP]];
+        cpu->registers[SP]++;
+        break;
       case HLT:
         running = 0;
         break;

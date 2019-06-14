@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define DATA_LEN 6
 #define SP 7
 
 /**
@@ -95,6 +94,9 @@ void cpu_run(struct cpu *cpu)
     switch (IR){
       // 5. Do whatever the instruction should do according to the spec.
       // DAY 1 HLT, LDI, PRN
+      case HLT:
+        running = 0;
+        break;
       case LDI:
         cpu->registers[operandA] = operandB;
         break;
@@ -130,7 +132,7 @@ void cpu_run(struct cpu *cpu)
         instruction_bytes = 0;
         break;
       case JMP:
-        cpu->pc = cpu->ram[cpu->registers[operandA]];
+        cpu->pc = cpu->registers[operandA];
         instruction_bytes =0;
         break;
       case CMP:
@@ -147,9 +149,6 @@ void cpu_run(struct cpu *cpu)
             cpu->pc = cpu->registers[operandA];
             instruction_bytes = 0;
           } 
-        break;
-      case HLT:
-        running = 0;
         break;
     default:
         printf("Unknown instruction %02x at address %02x\n");

@@ -4,8 +4,8 @@
 
 // Holds all information about the CPU
 struct cpu {
-  // TODO
-  unsigned char ir;
+  // Flag
+  unsigned char fl;
   // PC
   unsigned char pc;
   // registers (array)
@@ -34,6 +34,7 @@ enum alu_op {
 #define PUSH 0b01000101
 #define CALL 0b01010000
 #define RET 0b00010001
+#define CMP 0b10100111
 // TODO: more instructions here. These can be used in cpu_run().
 
 // Function declarations

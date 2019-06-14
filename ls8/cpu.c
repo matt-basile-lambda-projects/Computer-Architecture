@@ -48,6 +48,16 @@ void alu(struct cpu *cpu, enum alu_op op, unsigned char regA, unsigned char regB
     case ALU_ADD:
       reg[regA] += reg[regB];
       break;
+    case ALU_CMP:
+      if(reg[regA] == reg[regB]){
+         cpu->fl =  0b00000001;
+      }
+      else if(reg[regA] < reg[regB]){
+         cpu->fl =  0b00000100;
+      }else{
+        cpu->fl =  0b00000010;
+      }
+      break;
   }
 }
 
@@ -119,6 +129,12 @@ void cpu_run(struct cpu *cpu)
         cpu->registers[SP]++;
         instruction_bytes = 0;
         break;
+      case JMP:
+        cpu->pc = cpu->ram[cpu->registers[operandA]];
+        break;
+      case CMP:
+        alu(cpu, ALU_CMP, operandA, operandB);
+        break;
       case HLT:
         running = 0;
         break;
@@ -139,8 +155,8 @@ void cpu_init(struct cpu *cpu)
   // TODO: Initialize the PC and other special registers
   // Initialize program counter to 0 
   cpu->pc = 0;
-  // Initialize instruction register to 0
-  cpu->ir = 0;
+  // Initialize flag to 0
+  cpu->fl = 0;
   // Initialize 8 bit space for registers to 0
   memset(cpu->registers, 0, 8);
   // Initialize Registers SP

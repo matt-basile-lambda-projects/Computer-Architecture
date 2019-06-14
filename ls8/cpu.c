@@ -135,6 +135,11 @@ void cpu_run(struct cpu *cpu)
       case CMP:
         alu(cpu, ALU_CMP, operandA, operandB);
         break;
+      case JEQ:
+        if(cpu->fl == 1){
+          cpu->pc = cpu->registers[operandA];
+        }
+        break;
       case HLT:
         running = 0;
         break;

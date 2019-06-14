@@ -143,9 +143,9 @@ void cpu_run(struct cpu *cpu)
         } 
         break;
       case JNE:
-         if(cpu->fl  != 1){
+         if(cpu->fl > 1){
             cpu->pc = cpu->registers[operandA];
-            instruction_bytes =0;
+            instruction_bytes = 0;
           } 
         break;
       case HLT:

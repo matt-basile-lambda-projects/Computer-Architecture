@@ -131,6 +131,7 @@ void cpu_run(struct cpu *cpu)
         break;
       case JMP:
         cpu->pc = cpu->ram[cpu->registers[operandA]];
+        instruction_bytes =0;
         break;
       case CMP:
         alu(cpu, ALU_CMP, operandA, operandB);
@@ -138,7 +139,14 @@ void cpu_run(struct cpu *cpu)
       case JEQ:
         if(cpu->fl == 1){
           cpu->pc = cpu->registers[operandA];
-        }
+          instruction_bytes =0;
+        } 
+        break;
+      case JNE:
+         if(cpu->fl  != 1){
+            cpu->pc = cpu->registers[operandA];
+            instruction_bytes =0;
+          } 
         break;
       case HLT:
         running = 0;
